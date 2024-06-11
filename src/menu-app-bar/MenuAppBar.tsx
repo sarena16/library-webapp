@@ -1,3 +1,4 @@
+import React from 'react';
 import { AppBar, Box, IconButton, Toolbar, Typography } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircle from '@mui/icons-material/AccountCircle';
@@ -15,7 +16,7 @@ export function MenuAppBar() {
           aria-label="menu"
           sx={{ mr: 2 }}
         >
-          <MenuIcon></MenuIcon>
+          <MenuIcon />
         </IconButton>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
           Library
@@ -27,7 +28,7 @@ export function MenuAppBar() {
             aria-label="account"
             aria-controls="menu-appbar"
             aria-haspopup="true"
-            onClick={() => navigate('login')}
+            onClick={() => navigate('/login')}
             sx={{ mr: 2 }}
           >
             <AccountCircle />

@@ -1,11 +1,12 @@
+import React from 'react';
 import { Button, TextField } from '@mui/material';
 import './Login-form.css';
 import LoginIcon from '@mui/icons-material/Login';
-import { Formik, yupToFormErrors } from 'formik';
+import { Formik } from 'formik';
 import * as yup from 'yup';
-import { Password } from '@mui/icons-material';
 import { useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useApi } from '../api/ApiProvider';
 
 type FormValues = {
   username: string;
@@ -14,12 +15,19 @@ type FormValues = {
 
 function LoginForm() {
   const navigate = useNavigate();
+  const apiClient = useApi();
 
-  const submit = useCallback(
+  const onSubmit = useCallback(
     (values: FormValues, formik: any) => {
-      navigate('/home');
+      apiClient.login(values).then((response) => {
+        if (response.success) {
+          navigate('/home');
+        } else {
+          formik.setFieldError('username', 'Invalid username or password');
+        }
+      });
     },
-    [navigate],
+    [apiClient, navigate],
   );
 
   const validationSchema = useMemo(
@@ -29,7 +37,7 @@ function LoginForm() {
         password: yup
           .string()
           .required('Required')
-          .min(5, 'Password is too short'),
+          .min(5, 'Password too short'),
       }),
     [],
   );
@@ -37,15 +45,15 @@ function LoginForm() {
   return (
     <Formik
       initialValues={{ username: '', password: '' }}
-      onSubmit={submit}
+      onSubmit={onSubmit}
       validationSchema={validationSchema}
       validateOnChange
       validateOnBlur
     >
       {(formik: any) => (
         <form
-          id="loginForm"
           className="Login-form"
+          id="singForm"
           onSubmit={formik.handleSubmit}
           noValidate
         >
@@ -53,10 +61,10 @@ function LoginForm() {
             id="username"
             label="Username"
             variant="standard"
-            // name="username"
+            name="username"
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            error={formik.touched.username && Boolean(formik.errors.username)}
+            error={formik.touched.username && !!formik.errors.username}
             helperText={formik.touched.username && formik.errors.username}
           />
           <TextField
@@ -64,10 +72,10 @@ function LoginForm() {
             label="Password"
             variant="standard"
             type="password"
-            // name="password"
+            name="password"
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            error={formik.touched.password && Boolean(formik.errors.password)}
+            error={formik.touched.password && !!formik.errors.password}
             helperText={formik.touched.password && formik.errors.password}
           />
           <Button
