@@ -12,21 +12,38 @@ export class LibraryClient {
 
   constructor() {
     this.client = axios.create({
-      baseURL: 'http://localhost:3306/api',
+      baseURL: 'http://localhost:8080/api',
     });
+
+    // Add token to request headers if available
+    const token = localStorage.getItem('token');
+    if (token) {
+      this.client.defaults.headers.common['Authorization'] = 'Bearer ' + token;
+    }
+
+    // Set up interceptors to handle authentication errors
+    this.client.interceptors.response.use(
+      (response: AxiosResponse) => response,
+      (error: AxiosError) => {
+        if (error.response?.status === 401 || error.response?.status === 403) {
+          // Handle unauthorized access, possibly navigate to login
+          console.error('Unauthorized or Forbidden. Redirecting to login...');
+          // NavigateToLogin(); // Uncomment if NavigateToLogin function is defined
+        }
+        return Promise.reject(error);
+      }
+    );
   }
 
-  public async login(
-    data: LoginDto,
-  ): Promise<ClientResponse<LoginResponseDto | null>> {
+  public async login(data: LoginDto): Promise<ClientResponse<LoginResponseDto | null>> {
     try {
-      const response: AxiosResponse<LoginResponseDto> = await this.client.post(
-        '/auth/login',
-        data,
-      );
+      const response: AxiosResponse<LoginResponseDto> = await this.client.post('/auth/login', data);
 
-      this.client.defaults.headers.common['Authorization'] =
-        `Bearer ${response.data.token}`;
+      const token = response.data.token;
+      if (token) {
+        localStorage.setItem('token', token);
+        this.client.defaults.headers.common['Authorization'] = 'Bearer ' + token;
+      }
 
       return {
         success: true,
@@ -35,7 +52,6 @@ export class LibraryClient {
       };
     } catch (error) {
       const axiosError = error as AxiosError<Error>;
-
       return {
         success: false,
         data: null,
@@ -55,7 +71,6 @@ export class LibraryClient {
       };
     } catch (error) {
       const axiosError = error as AxiosError<Error>;
-
       return {
         success: false,
         data: null,
