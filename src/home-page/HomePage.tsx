@@ -1,4 +1,3 @@
-// src/home-page/HomePage.tsx
 import React, { useState } from 'react';
 import { Outlet, Link, Route, Routes } from 'react-router-dom';
 import { Drawer, List, ListItem, ListItemIcon, ListItemText, IconButton, Box } from '@mui/material';
@@ -27,7 +26,7 @@ function HomePage() {
             </ListItemIcon>
             <ListItemText primary="Home" />
           </ListItem>
-          <ListItem button component={Link} to="book-list">
+          <ListItem button component={Link} to="/book-list">
             <ListItemIcon>
               <BookIcon />
             </ListItemIcon>
@@ -37,7 +36,7 @@ function HomePage() {
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <Routes>
-          <Route path="book-list" element={<BookList />} />
+          <Route path="/book-list" element={<BookList />} />
         </Routes>
         <Outlet />
       </Box>
