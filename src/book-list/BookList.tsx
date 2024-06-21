@@ -1,40 +1,40 @@
-// src/book-list/BookList.tsx
-import React from 'react';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { LibraryClient } from '../api/library-client';
 
-const sampleBooks = [
-  { id: 1, title: 'The Great Gatsby', author: 'F. Scott Fitzgerald', year: 1925 },
-  { id: 2, title: 'To Kill a Mockingbird', author: 'Harper Lee', year: 1960 },
-  { id: 3, title: '1984', author: 'George Orwell', year: 1949 },
-  { id: 4, title: 'Pride and Prejudice', author: 'Jane Austen', year: 1813 },
-  { id: 5, title: 'The Catcher in the Rye', author: 'J.D. Salinger', year: 1951 },
-];
 
-function BookList() {
+const BookList = () => {
+  const [books, setBooks] = useState<any[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchBooks = async () => {
+      const client = new LibraryClient();
+      const response = await client.getBooks();
+      if (response.success) {
+        setBooks(response.data);
+      } else {
+        setError(`Error: ${response.statusCode}`);
+      }
+      setLoading(false);
+    };
+
+    fetchBooks();
+  }, []);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>{error}</p>;
+
   return (
-    <TableContainer component={Paper}>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>ID</TableCell>
-            <TableCell>Title</TableCell>
-            <TableCell>Author</TableCell>
-            <TableCell>Year</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {sampleBooks.map((book) => (
-            <TableRow key={book.id}>
-              <TableCell>{book.id}</TableCell>
-              <TableCell>{book.title}</TableCell>
-              <TableCell>{book.author}</TableCell>
-              <TableCell>{book.year}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <div>
+      <h1>Book List</h1>
+      <ul>
+        {books.map((book) => (
+          <li key={book.id}>{book.title}</li>
+        ))}
+      </ul>
+    </div>
   );
-}
+};
 
 export default BookList;

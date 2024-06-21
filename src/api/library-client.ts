@@ -1,5 +1,6 @@
 import axios, { AxiosError, AxiosInstance, AxiosResponse } from 'axios';
 import { LoginDto, LoginResponseDto } from './dto/login.dto';
+import { NavigateToLogin } from './NavigateToLogin';
 
 export type ClientResponse<T> = {
   success: boolean;
@@ -14,26 +15,27 @@ export class LibraryClient {
     this.client = axios.create({
       baseURL: 'http://localhost:8080/api',
     });
-
+  
     // Add token to request headers if available
     const token = localStorage.getItem('token');
     if (token) {
       this.client.defaults.headers.common['Authorization'] = 'Bearer ' + token;
     }
-
+  
     // Set up interceptors to handle authentication errors
     this.client.interceptors.response.use(
       (response: AxiosResponse) => response,
       (error: AxiosError) => {
         if (error.response?.status === 401 || error.response?.status === 403) {
-          // Handle unauthorized access, possibly navigate to login
           console.error('Unauthorized or Forbidden. Redirecting to login...');
-          // NavigateToLogin(); // Uncomment if NavigateToLogin function is defined
+          
+          NavigateToLogin(); 
         }
         return Promise.reject(error);
       }
     );
   }
+  
 
   public async login(data: LoginDto): Promise<ClientResponse<LoginResponseDto | null>> {
     try {
@@ -62,8 +64,7 @@ export class LibraryClient {
 
   public async getBooks(): Promise<ClientResponse<any | null>> {
     try {
-      const response = await this.client.get('/books');
-
+      const response: AxiosResponse<any> = await this.client.get('/books');
       return {
         success: true,
         data: response.data,
