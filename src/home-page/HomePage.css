@@ -1,4 +1,14 @@
 .toolbar {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+  align-items: center;
+  height: 80px; /* Adjust height as needed */
+  background-color: #f0f0f0; /* Example background color */
+  margin-bottom: 20px; /* Example margin */
+  border-bottom: 2px solid #ccc; /* Example border */
+}
+.toolbar h4 {
+  color: #333; /* Example text color */
+  margin: 0;
+  padding: 10px;
 }

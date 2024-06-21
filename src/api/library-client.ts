@@ -22,7 +22,7 @@ export class LibraryClient {
       this.client.defaults.headers.common['Authorization'] = 'Bearer ' + token;
     }
   
-    // Set up interceptors to handle authentication errors
+    
     this.client.interceptors.response.use(
       (response: AxiosResponse) => response,
       (error: AxiosError) => {

@@ -1,0 +1,52 @@
+/* BookList.css */
+.book-list-container {
+  margin: 20px auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  width: 80%;
+  max-width: 1200px; /* Adjust max-width as needed */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.book-list-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.book {
+  width: 250px;
+  margin: 10px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.book:hover {
+  transform: translateY(-5px);
+}
+
+.book-image {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.book-info {
+  padding-top: 10px;
+  text-align: center;
+}
+
+.book-title {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.book-details {
+  font-size: 14px;
+  color: #666;
+}

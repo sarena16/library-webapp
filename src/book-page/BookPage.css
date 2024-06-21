@@ -1,0 +1,32 @@
+.book-page-container {
+  padding: 20px;
+  background-color: #439353; 
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.book-list-header {
+  margin-bottom: 20px;
+}
+
+.book-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  max-width: 1200px;
+  width: 100%;
+}
+
+.book-item {
+  background-color: #71d79f; 
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); 
+}
+
+.book-item:hover {
+  transform: translateY(-5px); 
+  transition: transform 0.3s ease;
+}

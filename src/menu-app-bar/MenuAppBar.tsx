@@ -7,7 +7,7 @@ import { Link, useNavigate } from 'react-router-dom';
 export function MenuAppBar() {
   const navigate = useNavigate();
   return (
-    <AppBar position="static">
+    <AppBar position="static" sx={{ bgcolor: 'DarkGreen' }}>
       <Toolbar>
         <IconButton
           size="large"

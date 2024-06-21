@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Box, CircularProgress, Typography } from '@mui/material';
 import Book from '../Book/Book';
 import { LibraryClient } from '../api/library-client';
+import './BookPage.css'; 
 
 const BookPage = () => {
   const [books, setBooks] = useState<any[]>([]);
@@ -29,23 +30,24 @@ const BookPage = () => {
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <Box>
-      <Typography variant="h4" gutterBottom>
+    <Box className="book-page-container">
+      <Typography variant="h4" className="book-list-header">
         Book List
       </Typography>
-      <Box>
+      <Box className="book-list">
         {books.map((book) => (
-          <Book
-            key={book.bookId}
-            bookId={book.bookId}
-            isbn={book.isbn}
-            title={book.title}
-            author={book.author}
-            publisher={book.publisher}
-            yearPublished={book.yearPublished}
-            available={book.available}
-            availableBooks={book.availableBooks}
-          />
+          <Box key={book.bookId} className="book-item">
+            <Book
+              bookId={book.bookId}
+              isbn={book.isbn}
+              title={book.title}
+              author={book.author}
+              publisher={book.publisher}
+              yearPublished={book.yearPublished}
+              available={book.available}
+              availableBooks={book.availableBooks}
+            />
+          </Box>
         ))}
       </Box>
     </Box>
